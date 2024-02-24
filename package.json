@@ -23,6 +23,7 @@
     "eslint-config-google": "^0.14.0",
     "jscpd": "^3.5.4",
     "mocha": "^10.2.0",
+    "mongodb-memory-server": "^9.1.6",
     "nyc": "^15.1.0"
   },
   "dependencies": {

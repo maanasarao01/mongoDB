@@ -1,14 +1,25 @@
 const mongoose=require('mongoose')
 const Student=require('./Student')
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
-async function connectToDB(url){
-    try{
-        await mongoose.connect(url)
-        return 'Successfully Connected to Database!'
-    }
-    catch(e){
-        console.log(e.message)
-        throw e
+let mongoServer;
+
+async function startMemoryServer() {
+    mongoServer = new MongoMemoryServer();
+    await mongoServer.start()
+    const mongoUri = await mongoServer.getUri();
+    console.log(mongoUri)
+    return mongoUri;
+}
+
+async function connectToDB() {
+    try {
+        const uri = await startMemoryServer();
+        await mongoose.connect(uri);
+        return 'Successfully Connected to Database!';
+    } catch (e) {
+        console.log(e.message);
+        throw e;
     }
 }
 
@@ -81,5 +92,16 @@ async function deleteOne(name){
     }
 }
 
+//Disconnect
+async function disconnectFromDB(){
+    try{
+    await mongoose.disconnect();
+    await mongoServer.stop();
+    return 'Successfully disconnected'
+    }
+    catch(e){
+        throw e
+    }
+}
 
-module.exports= {connectToDB,Insert,readByName,updateOne,deleteOne}
+module.exports= {connectToDB,Insert,readByName,updateOne,deleteOne,disconnectFromDB}

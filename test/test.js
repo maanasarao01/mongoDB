@@ -1,10 +1,10 @@
 const { expect } = require('chai');
-const { connectToDB, Insert, readByName,updateOne,deleteOne } = require('../index');
+const { connectToDB, Insert, readByName,updateOne,deleteOne, disconnectFromDB } = require('../index');
 
 describe('Database Operations', () => {
-    it('should successfully connect to the database', async () => {
-        const url = 'mongodb://localhost:27017/testdb'; 
-        const result = await connectToDB(url);
+
+    before(async () => {
+        const result = await connectToDB();
         expect(result).to.equal('Successfully Connected to Database!');
     });
 
@@ -34,5 +34,9 @@ describe('Database Operations', () => {
         expect(result).to.equal('Deleted successfully!');
     });
 
+    after(async () => {
+        const result = await disconnectFromDB();
+        expect(result).to.equal('Successfully disconnected');
+    });
 
 });
