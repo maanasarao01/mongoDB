@@ -53,7 +53,7 @@ describe('Database Operations', () => {
     expect(result).to.equal('Deleted successfully!');
   });
 
-  it('should successfully delete a document in the Collection', async () => {
+  it('should\'nt delete a document if it is not in the Collection', async () => {
     const result = await deleteOne('Keerthana');
     expect(result).to.equal('No document found with given name');
   });
